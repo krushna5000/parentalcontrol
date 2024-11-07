@@ -3,6 +3,7 @@ const {Colors}= require('react-native/Libraries/NewAppScreen');
 module.exports={
     Colors:{
         col1:'white',
+        col2:'black',
         text1:'black',
         text2:'gray',
         text3:'black'
@@ -15,11 +16,12 @@ module.exports={
         width:'80%',
         height:50,
         borderRadius:10,
-        backgroundColor:'orange',
+        backgroundColor:'#716E68',
         justifyContent:'center',
         alignItems:'center',
         elevation:10,
-        color:'white'
+        color:'white',
+        marginTop: 20,
     },
     hr80: {
         width: '80%',
@@ -27,18 +29,4 @@ module.exports={
         borderBottomWidth: 1,
         marginVertical: 20,
     },
-    veg:{
-        backgroundColor:'green',
-        width:20,
-        height:20,
-        borderRadius:5  ,
-    },
-    nonveg:{
-        backgroundColor:'lightblue',
-        width:20,
-        height:20,
-        borderRadius:5,
-        
-    }
-   
 }
