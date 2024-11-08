@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, FlatList, Image } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
 const FamilyProfileScreen = () => {
   // Initial empty state for child profiles
@@ -7,18 +7,18 @@ const FamilyProfileScreen = () => {
   
   // State to manage the inputs for name, age, phone, and profile picture URL
   const [name, setName] = useState('');
-  const [age, setAge] = useState('');
+  const [Email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [profilePic, setProfilePic] = useState('');
 
   // Function to handle adding a new profile
   const handleAddProfile = () => {
-    if (name && age && phone && profilePic) {
+    if (name && phone&& Email) {
       // Add the new profile to the family list
       const newProfile = {
         id: Math.random().toString(), // Generate a random ID
         name,
-        age,
+        Email,
         phone,
         profilePic,
       };
@@ -28,7 +28,7 @@ const FamilyProfileScreen = () => {
 
       // Clear input fields after adding
       setName('');
-      setAge('');
+      setEmail('');
       setPhone('');
       setProfilePic('');
     } else {
@@ -49,10 +49,10 @@ const FamilyProfileScreen = () => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Age"
-        value={age}
-        onChangeText={setAge}
-        keyboardType="numeric"
+        placeholder="Email"
+        value={Email}
+        onChangeText={setEmail}
+        
       />
       <TextInput
         style={styles.input}
@@ -61,12 +61,12 @@ const FamilyProfileScreen = () => {
         onChangeText={setPhone}
         keyboardType="phone-pad"
       />
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         placeholder="Profile Picture URL"
         value={profilePic}
         onChangeText={setProfilePic}
-      />
+      /> */}
       
       {/* Add Profile Button */}
       <Button title="Add Profile" onPress={handleAddProfile} />
@@ -78,12 +78,16 @@ const FamilyProfileScreen = () => {
         data={family}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.profileCard}>
-            <Image source={{ uri: item.profilePic }} style={styles.profilePic} />
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+            <View style={styles.profileCard}>
+            {/* <Image source={{ uri: item.profilePic }} style={styles.profilePic} /> */} 
+            <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
             <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.age}>Age: {item.age}</Text>
+            <Text style={styles.Email}>Email: {item.Email}</Text>
             <Text style={styles.phone}>Phone: {item.phone}</Text>
+      </TouchableOpacity>
           </View>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  age: {
+  Email: {
     fontSize: 16,
     color: '#555',
   },

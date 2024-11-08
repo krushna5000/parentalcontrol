@@ -216,14 +216,14 @@ const SignupScreen = ({ navigation }) => {
                     </View>
                     <View style={hr80}></View>
                     <Text >Already have an account?
-                        <Text style={styles.signup} onPress={() => navigation.navigate('login')}> Sign In</Text>
+                        <Text style={styles.signup} onPress={() => navigation.navigate('login')}> LogIn</Text>
                     </Text>
                 </View>
                 :
                 <View style={styles.container1}>
                     <Text style={styles.successmessage}>{successmsg}</Text>
                     <TouchableOpacity style={btn1} onPress={() => navigation.navigate('login')}>
-                        <Text style={{ color: Colors.col1, fontSize: titles.btntxt, fontWeight: "bold" }}>Sign In</Text>
+                        <Text style={{ color: Colors.col1, fontSize: titles.btntxt, fontWeight: "bold" }}>LogIn</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={btn1} onPress={() => setSuccessmsg(null)}>

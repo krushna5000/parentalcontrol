@@ -8,6 +8,12 @@ import WelcomeScreen from './src/Screens/WelcomeScreen';
 import HomeScreen from './src/Screens/HomeScreen';
 import SignupScreen from './src/Screens/SignupScreen';
 import LoginScreen from './src/Screens/LoginScreen';
+import ScreenTime from './src/Screens/ScreenTimeTrackerPage';
+import LocationTracking from './src/Screens/LocationTracking';
+import Profile from './src/Screens/Profile';
+import ActivityPage from './src/Screens/ActivityPage';
+
+
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -27,10 +33,28 @@ export default function App() {
           options={{
             headerShown: false,
           }} />
-         <Stack.Screen name="home" component={HomeScreen}
+         <Stack.Screen name="Profile" component={Profile}
           options={{
             headerShown: false,
           }} />
+        
+           <Stack.Screen name="ScreenTime" component={ScreenTime}
+         options={{
+          headerShown: false,
+            }} />
+            <Stack.Screen name="ActivityPage" component={ActivityPage}
+         options={{
+          headerShown: false,
+            }} />
+            <Stack.Screen name="HomeScreen" component={HomeScreen}
+         options={{
+          headerShown: false,
+            }} />
+        <Stack.Screen name="LocationTracking" component={LocationTracking}
+         options={{
+          headerShown: false,
+            }} />
+        
       </Stack.Navigator>
     </NavigationContainer>
 
@@ -45,13 +69,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-
-
-
-// Category page
-// cart page
-// add to cart functionality
-// track order page
-// order history page
-// payment gateway 

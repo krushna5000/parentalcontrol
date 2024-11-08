@@ -1,147 +1,141 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, SafeAreaView, ScrollView ,TouchableOpacity} from 'react-native';
+import { Button, Card, Title, Paragraph } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { createStaticNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Entypo from '@expo/vector-icons/Entypo';
 
-const FamilyProfileScreen = ({ navigation }) => {
-  // Initial empty state for child profiles
-  const [family, setFamily] = useState([]);
-  
-  // State to manage the inputs for name, age, phone, and profile picture URL
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [phone, setPhone] = useState('');
-  const [profilePic, setProfilePic] = useState('');
 
-  // Function to handle adding a new profile
-  const handleAddProfile = () => {
-    if (name && age && phone && profilePic) {
-      // Add the new profile to the family list
-      const newProfile = {
-        id: Math.random().toString(), // Generate a random ID
-        name,
-        age,
-        phone,
-        profilePic,
-      };
-      
-      // Update the family state with the new profile
-      setFamily([...family, newProfile]);
-
-      // Clear input fields after adding
-      setName('');
-      setAge('');
-      setPhone('');
-      setProfilePic('');
-    } else {
-      alert('Please fill in all fields!');
-    }
-  };
-
+// Parent Control HomeScreen Component
+const HomeScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Add Child Profile</Text>
+    
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.headerContainer}>
+          <Title style={styles.header}></Title>
+        </View>
 
-      {/* Input Fields */}
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        value={name}
-        onChangeText={setName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Age"
-        value={age}
-        onChangeText={setAge}
-        keyboardType="numeric"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Phone"
-        value={phone}
-        onChangeText={setPhone}
-        keyboardType="phone-pad"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Profile Picture URL"
-        value={profilePic}
-        onChangeText={setProfilePic}
-      />
+      {/*add one more child*/}
+      <Card style={styles.card}>
+          <Card.Content>
+          <Entypo name="add-to-list" size={24} color="black" />
+            <Title style={styles.cardTitle}>Add Multipal Students</Title>
+            <Paragraph style={styles.cardDescription}> 
+            </Paragraph>
+            <Button 
+              mode="contained" 
+              onPress={() => navigation.navigate('Profile')}>
+             Add
+            </Button>
+          </Card.Content>
+        </Card>
       
-      {/* Add Profile Button */}
-      <Button title="Add Profile" onPress={handleAddProfile} />
+        {/* Screen Time Card */}
+        <Card style={styles.card}>
+          <Card.Content>
+            <Icon name="time-outline" size={30} color="#4CAF50" />
+            <Title style={styles.cardTitle}>Screen Time Management</Title>
+            <Paragraph style={styles.cardDescription}>
+              Set daily limits on screen time for your child’s device.
+            </Paragraph>
+            <Button 
+              mode="contained" 
+              onPress={() => navigation.navigate('ScreenTime')}>
+              Set Screen Time
+            </Button>
+          </Card.Content>
+        </Card>
 
-      <Text style={styles.title}>Family Profiles</Text>
-      
-      {/* Display Profiles with FlatList */}
-      <FlatList
-        data={family}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.profileCard}>
-            <TouchableOpacity onPress={() => { navigation.navigate('Userprofile') }}>
-              <Image source={{ uri: item.profilePic }} style={styles.profilePic} />
-              <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.age}>Age: {item.age}</Text>
-              <Text style={styles.phone}>Phone: {item.phone}</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
-    </View>
+
+        {/* Location Tracking Card */}
+        <Card style={styles.card}>
+          <Card.Content>
+            <Icon name="location-outline" size={30} color="#2196F3" />
+            <Title style={styles.cardTitle}>Location Tracking</Title>
+            <Paragraph style={styles.cardDescription}>
+              Track your child's location in real-time.
+            </Paragraph>
+            <Button 
+              mode="contained" 
+              onPress={() => navigation.navigate('LocationTracking')}>
+              View Location
+            </Button>
+          </Card.Content>
+        </Card>
+
+        {/* Reports Card */}
+        <Card style={styles.card}>
+          <Card.Content>
+            <Icon name="document-text-outline" size={30} color="#673AB7" />
+            <Title style={styles.cardTitle}>Activity Reports</Title>
+            <Paragraph style={styles.cardDescription}>
+              Get detailed reports on your child’s digital activities.
+            </Paragraph>
+            <Button 
+              mode="contained" 
+              onPress={() => navigation.navigate('ActivityPage')}>
+              View Reports
+            </Button>
+          </Card.Content>
+        </Card>
+
+         {/* App Restrictions Card */}
+         <Card style={styles.card}>
+          <Card.Content>
+            <Icon name="lock-closed-outline" size={30} color="#FF5722" />
+            <Title style={styles.cardTitle}>App Restrictions</Title>
+            <Paragraph style={styles.cardDescription}>
+              Restrict access to specific apps and websites.
+            </Paragraph>
+            <Button 
+              mode="contained" 
+              onPress={() => navigation.navigate('ChildMonitring')}>
+              Set Restrictions
+            </Button>
+          </Card.Content>
+        </Card>
+
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30,
+    backgroundColor: '#f5f5f5',
+  },
+  scrollContainer: {
+    padding: 15,
+  },
+  headerContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  header: {
+    fontSize: 28,
+    color: '#333',
+    fontWeight: 'bold',
+  },
+  card: {
+    marginBottom: 15,
+    borderRadius: 8,
+    elevation: 5,
     backgroundColor: '#fff',
   },
-  title: {
-    fontSize: 24,
+  cardTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 50,
-    textAlign: 'center',
+    marginTop: 10,
   },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 15,
-    paddingLeft: 10,
-  },
-  profileCard: {
-    marginBottom: 20,
-    padding: 15,
-    backgroundColor: '#f8f8f8',
-    borderRadius: 10,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 2 },
-  },
-  profilePic: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  age: {
-    fontSize: 16,
-    color: '#555',
-  },
-  phone: {
+  cardDescription:{
     fontSize: 14,
     color: '#555',
+    marginVertical: 10,
   },
 });
 
-export default FamilyProfileScreen;
+export default HomeScreen;
+

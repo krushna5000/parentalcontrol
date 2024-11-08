@@ -58,7 +58,7 @@ const WelcomeScreen = ({ navigation }) => {
                 <View style={styles.logged}>
                     <Text style={styles.txtlog}>Signed in as <Text style={styles.txtlogin}>{userlogged.email}</Text></Text>
                     <View style={styles.btnout}>
-                        <TouchableOpacity onPress={() => navigation.navigate('home')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
                             <Text style={styles.btn}>Next</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => handlelogout()}>
@@ -75,7 +75,7 @@ const WelcomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FEF8BF',
+        backgroundColor: '#DDDCD5',
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
@@ -123,11 +123,11 @@ const styles = StyleSheet.create({
     },
     txtlog: {
         fontSize: 16,
-        color: Colors.col1,
+        color: Colors.col2,
     },
     txtlogin: {
         fontSize: 16,
-        color: Colors.col1,
+        color: Colors.col2,
         fontWeight: '700',
         textDecorationStyle: 'solid',
         textDecorationLine: 'underline',

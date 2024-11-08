@@ -1,6 +1,8 @@
 apply plugin: id("com.android.application")
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+implementation project(':react-native-background-timer')
+
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 

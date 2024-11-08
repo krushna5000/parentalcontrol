@@ -1,83 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, Platform, Alert } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
-import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import { h } from 'preact';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'; // Optional for icons
 
-const TrackLocation = () => {
-  const [location, setLocation] = useState(null);
-  const [isTracking, setIsTracking] = useState(false);
-  const [error, setError] = useState(null);
+const ChildMonitoringPage = ({ child, appUsageData, onSetTimeLimit, onViewDetails }) => {
+  // Sample data structure for app usage (you can replace this with dynamic data)
+  // const appUsageData = [
+  //   { app: 'YouTube', usage: 120 }, // usage in minutes
+  //   { app: 'TikTok', usage: 60 },
+  //   { app: 'Instagram', usage: 90 },
+  // ];
 
-  useEffect(() => {
-    // Request location permission when the page loads
-    requestLocationPermission();
-  }, []);
-
-  const requestLocationPermission = async () => {
-    const result =
-      Platform.OS === 'ios'
-        ? await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
-        : await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-
-    if (result === RESULTS.GRANTED) {
-      console.log('Permission granted');
-    } else {
-      Alert.alert('Permission Denied', 'Location permission is required to track location.');
-    }
-  };
-
-  const startTrackingLocation = () => {
-    setIsTracking(true);
-
-    // Watch for location updates
-    Geolocation.watchPosition(
-      (position) => {
-        setLocation(position.coords);
-        setError(null);
-      },
-      (error) => {
-        console.error(error);
-        setError(error.message);
-      },
-      {
-        enableHighAccuracy: true,
-        distanceFilter: 10, // Update location every 10 meters
-        interval: 2000, // Update every 2 seconds
-        fastestInterval: 1000, // Update at least every 1 second
-      }
+  const handleSetLimit = (appName) => {
+    Alert.alert(
+      "Set Time Limit",
+      `Set a new time limit for ${appName}`,
+      [
+        { text: 'Cancel' },
+        { text: 'Set Limit', onPress: () => onSetTimeLimit(appName) }
+      ]
     );
   };
 
-  const stopTrackingLocation = () => {
-    setIsTracking(false);
-    Geolocation.clearWatch();
-  };
-
-  const renderLocation = () => {
-    if (error) {
-      return <Text style={styles.errorText}>{error}</Text>;
-    }
-    if (location) {
-      return (
-        <View style={styles.locationInfo}>
-          <Text>Latitude: {location.latitude}</Text>
-          <Text>Longitude: {location.longitude}</Text>
-        </View>
-      );
-    } else {
-      return <Text>Waiting for location...</Text>;
-    }
+  const renderAppUsage = ({ item }) => {
+    return (
+      <View style={styles.appUsageItem}>
+        <Text style={styles.appName}>{item.app}</Text>
+        <Text style={styles.appUsage}>{item.usage} mins</Text>
+        <TouchableOpacity onPress={() => handleSetLimit(item.app)} style={styles.setLimitButton}>
+          <Icon name="clock" size={20} color="#fff" />
+          <Text style={styles.setLimitText}>Set Limit</Text>
+        </TouchableOpacity>
+      </View>
+    );
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Track Location</Text>
+      {/* Header with child’s name and profile picture */}
+      <View style={styles.header}>
+        <Image source={{ uri: child.profilePicture }} style={styles.profilePic} />
+        <Text style={styles.childName}>{child.name}</Text>
+      </View>
 
-      {renderLocation()}
+      {/* Activity Overview */}
+      <View style={styles.activityOverview}>
+        <Text style={styles.overviewTitle}>Daily Screen Time</Text>
+        <Text style={styles.screenTime}>{child.dailyScreenTime} mins</Text>
+        <Text style={styles.overviewSubtitle}>Apps used today:</Text>
+      </View>
 
-      <Button
-        title={isTracking ? 'Stop Tracking' : 'Start Tracking'}
-        onPress={isTracking ? stopTrackingLocation : startTrackingLocation}
+      {/* App Usage Breakdown */}
+      <FlatList
+        data={appUsageData}
+        renderItem={renderAppUsage}
+        keyExtractor={(item, index) => index.toString()}
       />
     </View>
   );
@@ -86,31 +62,76 @@ const TrackLocation = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'center',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f8f8f8',
+    padding: 16,
   },
-  title: {
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  profilePic: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 12,
+  },
+  childName: {
     fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center',
+    color: '#333',
+  },
+  activityOverview: {
     marginBottom: 20,
   },
-  locationInfo: {
-    marginBottom: 20,
-    padding: 10,
+  overviewTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  screenTime: {
+    fontSize: 22,
+    color: '#4CAF50', // Green for positive metrics
+    fontWeight: 'bold',
+    marginVertical: 8,
+  },
+  overviewSubtitle: {
+    fontSize: 16,
+    color: '#777',
+  },
+  appUsageItem: {
     backgroundColor: '#fff',
+    padding: 16,
     borderRadius: 8,
+    marginBottom: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 3,
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 4,
   },
-  errorText: {
-    color: 'red',
-    textAlign: 'center',
-    marginTop: 10,
+  appName: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#333',
+  },
+  appUsage: {
+    fontSize: 16,
+    color: '#777',
+  },
+  setLimitButton: {
+    backgroundColor: '#4CAF50',
+    padding: 8,
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  setLimitText: {
+    color: '#fff',
+    marginLeft: 8,
   },
 });
 
-export default TrackLocation;
+export default ChildMonitoringPage;
